@@ -1,0 +1,17 @@
+<div class="container-fluid d-flex justify-content-center p-5">
+  <div class="card" style="width: 18rem">
+    <div class="card-body">
+      <h5 class="card-title">Menú de administración</h5>
+      <p class="card-text">Seleccione una opción:</p>
+      <hr />
+      <br />
+      <div>
+        <ul *ngFor="let role of roles">
+          <button class="btn btn-outline-primary" (click)="onMain(role.idRol)">
+            {{ role.rol }}
+          </button>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
