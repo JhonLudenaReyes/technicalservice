@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { RouterModule } from '@angular/router';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { LandingModule } from './landing/landing.module';
+import { SidebarModule } from './sidebar/sidebar.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +22,7 @@ import { LandingModule } from './landing/landing.module';
     BrowserAnimationsModule,
     LandingModule,
     NavigationModule,
+    SidebarModule,
     AppRoutingModule,
     AuthModule,
     DashboardModule,
