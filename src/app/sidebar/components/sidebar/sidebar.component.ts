@@ -6,6 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent {
+  habilitar: boolean = false;
+
   onHumburger() {
     document.querySelector('#sidebar')?.classList.toggle('expand');
   }

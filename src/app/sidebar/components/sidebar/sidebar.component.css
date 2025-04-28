@@ -24,9 +24,13 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
+/*****
+
 .wrapper {
   display: flex;
 }
+
+
 
 .main {
   min-height: 100vh;
@@ -36,9 +40,12 @@ body {
   background-color: #fafbfe;
 }
 
+*****/
+
 #sidebar {
   width: 70px;
   min-width: 70px;
+  min-height: 90.5vh;
   z-index: 1000;
   transition: all .25s ease-in-out;
   background-color: #0e2238;
