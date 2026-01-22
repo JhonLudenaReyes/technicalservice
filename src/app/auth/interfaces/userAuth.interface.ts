@@ -11,18 +11,23 @@ export interface UserAuth {
 
 export interface Person {
   idPersona: number;
-  idLocalidad: number;
+  idCiudad: number;
   nombres: string;
   apellidos: string;
+  cedula: string;
+  ruc: string;
   direccion: string;
   celular: string;
+  email: string;
+  telefono: string;
+  telefono_adicional: string;
   estado: string;
-  localidad: Locality;
+  ciudad: City;
 }
 
-export interface Locality {
-  idLocalidad: number;
-  localidad: string;
+export interface City {
+  idCiudad: number;
+  ciudad: string;
   estado: string;
 }
 

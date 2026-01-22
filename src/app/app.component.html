@@ -1,2 +1,11 @@
 <app-navigation></app-navigation>
-<router-outlet></router-outlet>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col p-0 m-0" [hidden]="true">
+      <app-sidebar></app-sidebar>
+    </div>
+    <div class="col p-0 m-0">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

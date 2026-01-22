@@ -17,6 +17,11 @@ const routes: Routes = [
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   {
+    path: 'person',
+    loadChildren: () =>
+      import('./person/person.module').then((m) => m.PersonModule),
+  },
+  {
     path: '**',
     redirectTo: '',
   },
