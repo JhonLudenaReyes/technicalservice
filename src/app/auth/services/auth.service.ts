@@ -4,18 +4,25 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { UserAuth } from '../interfaces/userAuth.interface';
+import { UserLogin } from '../interfaces/userLogin';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   userAuth!: UserAuth;
+  user!: UserLogin;
 
-  private apiUrl = `http://localhost:8081/servicio-tecnico/web-service/api`;
+  private serverURL = `http://localhost:8081`;
+
+  private apiUrl = `servicio-tecnico/web-service/api`;
 
   constructor(private http: HttpClient) {}
 
-  getUserLogIn(user: UserAuth): Observable<UserAuth> {
-    return this.http.post<UserAuth>(`${this.apiUrl}/usuarios/login`, user);
+  getUserLogIn(user: UserLogin): Observable<UserAuth> {
+    return this.http.post<UserAuth>(
+      `${this.serverURL}/${this.apiUrl}/usuarios/login`,
+      user,
+    );
   }
 }

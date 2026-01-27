@@ -7,7 +7,7 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'landing',
+        path: '',
         component: LandingComponent,
       },
     ],

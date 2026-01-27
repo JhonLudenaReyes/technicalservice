@@ -1,12 +1,11 @@
 export interface UserAuth {
-  idUsuario?: number;
-  idPersona?: number;
+  idUsuario: number;
+  idPersona: number;
   usuario: string;
   contrasenia: string;
-  correo?: string;
-  estado?: string;
-  persona?: Person;
-  roles?: Role[];
+  estado: string;
+  persona: Person;
+  roles: Role[];
 }
 
 export interface Person {
