@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { UserAuth } from '../interfaces/userAuth.interface';
-import { UserLogin } from '../interfaces/userLogin';
+import { UserLogin } from '../interfaces/userLogin.interface';
 
 @Injectable({
   providedIn: 'root',

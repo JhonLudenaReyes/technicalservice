@@ -1,3 +1,11 @@
+<div class="position-relative p-0 border" *ngIf="this.errorServer.error">
+  <div class="position-absolute top-0 end-0 p-2">
+    <div class="alert alert-danger" role="alert">
+      {{ this.errorServer.detail }}
+      <i class="bi bi-x-square btn-hand" (click)="onErrorClear()"></i>
+    </div>
+  </div>
+</div>
 <div class="row justify-content-center">
   <div class="container m-4 pt-4 w-25">
     <h1 class="text-center">Inicio de sesión</h1>
@@ -24,13 +32,16 @@
         <input
           formControlName="user"
           type="text"
+          name="user"
           class="form-control"
           placeholder="Usuario"
           aria-label="Username"
           aria-describedby="userIcon"
         />
       </div>
-
+      <p *ngIf="user.invalid && user.touched" style="color: brown">
+        {{ getErrorMessageUser("user") }}
+      </p>
       <div class="input-group mb-3">
         <span class="input-group-text" id="passwordIcon"
           ><i class="bi bi-key"></i
@@ -39,12 +50,15 @@
           formControlName="password"
           type="password"
           class="form-control"
+          name="password"
           placeholder="Contraseña"
           aria-label="Contraseña"
           aria-describedby="passwordIcon"
         />
       </div>
-
+      <p *ngIf="password.invalid && password.touched" style="color: brown">
+        {{ getErrorMessagePassword("password") }}
+      </p>
       <button
         type="submit"
         class="btn btn-primary d-flex w-100 justify-content-center"
