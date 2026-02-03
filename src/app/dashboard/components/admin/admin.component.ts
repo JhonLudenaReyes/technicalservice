@@ -15,10 +15,10 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
     //Extraer del LocalStorage los datos completos del Usuario Logeado
-    this.userAuth = JSON.parse(localStorage.getItem('userAuth') || '[]');
+    this.userAuth = JSON.parse(localStorage.getItem('userAuth') || 'null');
 
     //Extraer todos los roles de ese usuario
-    this.roles = this.userAuth.roles || [];
+    this.roles = this.userAuth.roles || null;
   }
 
   onMain(idRole: number) {

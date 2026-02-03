@@ -14,9 +14,9 @@ export class NavigationComponent implements DoCheck {
   constructor(private router: Router) {}
 
   ngDoCheck(): void {
-    this.userAuth = JSON.parse(localStorage.getItem('userAuth') || '{}');
+    this.userAuth = JSON.parse(localStorage.getItem('userAuth') || 'null');
 
-    if (this.userAuth.idUsuario) {
+    if (this.userAuth != null) {
       this.habilitar = true;
     }
   }
@@ -31,6 +31,7 @@ export class NavigationComponent implements DoCheck {
 
   cerrarSesion() {
     localStorage.removeItem('userAuth');
+    localStorage.removeItem('idRole');
     this.habilitar = false;
 
     //localStorage.removeItem(`permissionsLogin`);
