@@ -22,6 +22,10 @@ const routes: Routes = [
       import('./person/person.module').then((m) => m.PersonModule),
   },
   {
+    path: 'role',
+    loadChildren: () => import('./role/role.module').then((m) => m.RoleModule),
+  },
+  {
     path: '**',
     redirectTo: '',
   },
