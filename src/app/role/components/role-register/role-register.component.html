@@ -1,1 +1,28 @@
-<p>role-register works!</p>
+<div class="card m-4" style="width: 25rem">
+  <div class="card-body">
+    <h5 class="card-title">Registro de roles</h5>
+    <i
+      class="bi bi-arrow-left"
+      [routerLink]="['/role/roles-list']"
+      routerLinkActive="router-link-active"
+    ></i>
+    <br />
+    <br />
+    <!-- FORMULARIO DE REGISTRO -->
+    <div class="mb-3">
+      <label for="fc_rol" class="form-label">Rol</label>
+      <input
+        type="text"
+        class="form-control"
+        id="fc_rol"
+        placeholder="Ingrese un rol"
+      />
+    </div>
+    <hr />
+    <div class="mb-3">
+      <button type="button" class="btn btn-primary w-100">
+        Guardar los cambios
+      </button>
+    </div>
+  </div>
+</div>

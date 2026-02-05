@@ -9,7 +9,11 @@
   </div>
   <ul class="sidebar-nav">
     <li class="sidebar-item" [hidden]="this.role">
-      <a href="role/roles-list" class="sidebar-link">
+      <a
+        class="sidebar-link"
+        [routerLink]="['role/roles-list']"
+        routerLinkActive="router-link-active"
+      >
         <i class="bi bi-person"></i>
         <span>Rol</span>
       </a>
