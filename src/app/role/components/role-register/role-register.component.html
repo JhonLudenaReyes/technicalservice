@@ -1,3 +1,31 @@
+<div class="position-relative p-0 border">
+  <div class="position-absolute top-0 end-0 p-2">
+    <!--NOTIFICACIÓN SUCCESS-->
+    <div
+      class="alert alert-success"
+      role="alert"
+      *ngIf="this.addSuccess.enable"
+    >
+      <h4 class="alert-heading">¡Confirmación!</h4>
+      {{ this.addSuccess.detail }}
+      <i class="bi bi-x-square btn-hand" (click)="onSuccessClear()"></i>
+    </div>
+    <!--NOTIFICACIÓN ERROR-->
+
+    <div
+      class="alert alert-danger"
+      role="alert"
+      *ngIf="this.errorServer.enable"
+    >
+      <h4 class="alert-heading">¡Error servidor!</h4>
+      {{ this.errorServer.detail }}
+      <i class="bi bi-x-square btn-hand" (click)="onErrorClear()"></i>
+    </div>
+
+    <!---->
+  </div>
+</div>
+
 <div class="card m-4" style="width: 25rem">
   <div class="card-body">
     <h5 class="card-title">Registro de roles</h5>
@@ -9,20 +37,24 @@
     <br />
     <br />
     <!-- FORMULARIO DE REGISTRO -->
-    <div class="mb-3">
-      <label for="fc_rol" class="form-label">Rol</label>
-      <input
-        type="text"
-        class="form-control"
-        id="fc_rol"
-        placeholder="Ingrese un rol"
-      />
-    </div>
-    <hr />
-    <div class="mb-3">
-      <button type="button" class="btn btn-primary w-100">
-        Guardar los cambios
-      </button>
-    </div>
+    <form (ngSubmit)="onSubmit()" [formGroup]="roleForm">
+      <div class="mb-3">
+        <label for="fc_rol" class="form-label">Rol</label>
+        <input
+          type="text"
+          formControlName="role"
+          class="form-control"
+          name="role"
+          id="fc_rol"
+          placeholder="Ingrese un rol"
+        />
+      </div>
+      <hr />
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary w-100">
+          Guardar los cambios
+        </button>
+      </div>
+    </form>
   </div>
 </div>

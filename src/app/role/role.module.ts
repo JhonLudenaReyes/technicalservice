@@ -6,8 +6,18 @@ import { RoleRegisterComponent } from './components/role-register/role-register.
 import { RoleRoutingModule } from './role-routing.module';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
+//Reactive Forms
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [RolesListComponent, RoleRegisterComponent],
-  imports: [CommonModule, RoleRoutingModule, RouterLink, RouterLinkActive],
+  imports: [
+    CommonModule,
+    RoleRoutingModule,
+    RouterLink,
+    RouterLinkActive,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
 })
 export class RoleModule {}

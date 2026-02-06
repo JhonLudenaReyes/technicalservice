@@ -9,11 +9,22 @@ import { Role } from '../interfaces/Role.interface';
 export class RoleService {
   role!: Role;
 
+  private serverURL = `http://localhost:8081`;
+
+  private apiUrl = `servicio-tecnico/web-service/api`;
+
   constructor(private http: HttpClient) {}
 
   getRolesActive(): Observable<Role[]> {
     return this.http.get<Role[]>(
-      `http://localhost:8081/servicio-tecnico/web-service/api/roles/roles-select`,
+      `${this.serverURL}/${this.apiUrl}/roles/roles-select`,
+    );
+  }
+
+  saveRole(role: Role): Observable<Role> {
+    return this.http.post<Role>(
+      `${this.serverURL}/${this.apiUrl}/roles/save`,
+      role,
     );
   }
 }
