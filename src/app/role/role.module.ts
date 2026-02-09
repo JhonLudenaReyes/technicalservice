@@ -8,6 +8,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
 //Reactive Forms
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module pagination
 
 @NgModule({
   declarations: [RolesListComponent, RoleRegisterComponent],
@@ -18,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     RouterLinkActive,
     FormsModule,
     ReactiveFormsModule,
+    NgxPaginationModule, // <-- include it in your app module
   ],
 })
 export class RoleModule {}

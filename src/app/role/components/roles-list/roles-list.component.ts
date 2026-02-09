@@ -14,6 +14,9 @@ import { Notificat } from 'src/app/auth/interfaces/notificat.interface';
 export class RolesListComponent implements OnInit {
   roles!: Role[];
 
+  //PARAM PAGINATION
+  page: number = 1;
+
   //SUCCESS NOTIFICATION
   addSuccess: Notificat = {
     enable: false,
