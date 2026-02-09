@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import {
   FormBuilder,
@@ -7,28 +7,35 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Role } from '../../interfaces/Role.interface';
+
+import { Role } from '../../interfaces/role.interface';
 import { RoleService } from '../../services/role.service';
 import { ErrorResponse } from 'src/app/role/interfaces/errorResponse.interface';
+import { Notificat } from 'src/app/auth/interfaces/notificat.interface';
 
 @Component({
   selector: 'app-role-register',
   templateUrl: './role-register.component.html',
   styleUrls: ['./role-register.component.css'],
 })
-export class RoleRegisterComponent {
+export class RoleRegisterComponent implements OnInit {
   //Creación de la propiedad para el formulario reactivo
   roleForm!: FormGroup;
   roleData!: Role;
 
+  action: string = 'Registro ';
+
+  roleId!: number;
+
   //SUCCESS NOTIFICATION
-  addSuccess = {
+  addSuccess: Notificat = {
     enable: false,
+    server: '',
     detail: '',
   };
 
   //NOTIFICACIÓN ERROR
-  errorServer = {
+  errorServer: Notificat = {
     enable: false,
     server: '',
     detail: '',
@@ -53,8 +60,27 @@ export class RoleRegisterComponent {
     private readonly fb: FormBuilder,
     private roleService: RoleService,
     private router: Router,
+    private aRoute: ActivatedRoute,
   ) {
     this.roleForm = this.initRoleForm();
+    this.roleId = Number(aRoute.snapshot.paramMap.get('roleId'));
+  }
+
+  ngOnInit(): void {
+    if (this.roleId != 0) {
+      this.action = 'Edición ';
+      this.getRoleEdit(this.roleId);
+    }
+  }
+
+  getRoleEdit(roleId: number) {
+    this.roleService.getRoleEdit(roleId).subscribe({
+      next: (role) => {
+        this.roleForm.setValue({
+          role: role.rol,
+        });
+      },
+    });
   }
 
   initRoleForm(): FormGroup {
@@ -71,23 +97,34 @@ export class RoleRegisterComponent {
   }
 
   onSubmit(): void {
+    //Data
     this.roleData = {
       rol: this.roleForm.get('role')?.value,
     };
 
-    this.roleService.saveRole(this.roleData).subscribe({
-      next: (role: Role) => {
-        console.log('entro a success');
-        //alert(`Datos guardados`);
-        this.onSuccess(role);
-        this.roleForm.reset();
-      },
-      error: (response: ErrorResponse) => {
-        //alert(`SUs datos no se han guardados`);
-        console.log('entro a invalid');
-        this.onInvalid(this.roleData, response);
-      },
-    });
+    if (this.roleId == 0) {
+      this.roleService.saveRole(this.roleData).subscribe({
+        next: (role: Role) => {
+          this.onSuccess(role);
+          this.roleForm.reset();
+        },
+        error: (response: ErrorResponse) => {
+          this.onInvalid(this.roleData, response);
+        },
+      });
+    } else {
+      this.roleData.idRol = this.roleId;
+
+      this.roleService.saveRole(this.roleData).subscribe({
+        next: (role: Role) => {
+          this.onSuccess(role);
+          this.roleForm.reset();
+        },
+        error: (response: ErrorResponse) => {
+          this.onInvalid(this.roleData, response);
+        },
+      });
+    }
   }
 
   //CLEAR SUCCESS NOTIFICATION

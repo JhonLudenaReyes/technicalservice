@@ -17,6 +17,10 @@ const routes: Routes = [
         component: RoleRegisterComponent,
       },
       {
+        path: 'role-edit/:roleId',
+        component: RoleRegisterComponent,
+      },
+      {
         path: '**',
         redirectTo: 'roles-list',
       },
