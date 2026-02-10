@@ -17,6 +17,9 @@ export class RolesListComponent implements OnInit {
   //PARAM PAGINATION
   page: number = 1;
 
+  //PARAM FILTER
+  roleFilter: any = { rol: '' };
+
   //SUCCESS NOTIFICATION
   addSuccess: Notificat = {
     enable: false,
