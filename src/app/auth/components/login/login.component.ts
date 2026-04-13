@@ -133,9 +133,6 @@ export class LoginComponent {
     this.authService.getUserLogIn(this.userData).subscribe({
       next: (userLogIn) => {
         this.userAuth = userLogIn;
-
-        localStorage.setItem('userAuth', JSON.stringify(this.userAuth));
-
         this.router.navigate(['/dashboard/admin']);
       },
       error: (response) => {

@@ -1,22 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AuthService } from './auth/services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
-  idRole!: number;
+export class AppComponent implements OnInit, OnDestroy {
+  idRole: number = 0;
   enable: boolean = true;
+  private authSub!: Subscription;
 
-  ngDoCheck(): void {
-    //Called every time that the input properties of a component or a directive are checked. Use it to extend change detection by performing a custom check.
-    //Add 'implements DoCheck' to the class.
-    this.idRole = JSON.parse(localStorage.getItem('idRole') || '0');
-    //console.log(`Test Panel idRole: ${this.idRole}`);
-    if (this.idRole > 0) {
-      this.enable = false;
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.authSub = this.authService.idRole$.subscribe((idRole) => {
+      this.idRole = idRole;
+      this.enable = idRole === 0;
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.authSub) {
+      this.authSub.unsubscribe();
     }
   }
+
   title = 'technicalservice';
 }

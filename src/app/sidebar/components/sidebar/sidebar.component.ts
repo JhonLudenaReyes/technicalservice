@@ -26,11 +26,7 @@ export class SidebarComponent {
     this.userAuth = JSON.parse(localStorage.getItem('userAuth') || 'null');
     this.idRole = JSON.parse(localStorage.getItem('idRole') || '0');
     if (this.userAuth != null && this.idRole > 0) {
-      //console.log('Ahora puedes mostrar los permisos');
-      //console.log(`Test Panel idRole: ${this.idRole}`);
-      //console.log(this.userAuth.roles[this.idRole - 1]);
       this.permits = this.userAuth.roles[this.idRole - 1].permisos;
-      //console.log(this.permits);
       this.addMenu(this.permits);
     }
   }
@@ -42,7 +38,8 @@ export class SidebarComponent {
           permision.idPermiso === 1 ||
           permision.idPermiso === 2 ||
           permision.idPermiso === 3 ||
-          permision.idPermiso === 4,
+          permision.idPermiso === 4 ||
+          permision.idPermiso === 5,
       )
     ) {
       this.role = false;
@@ -51,10 +48,11 @@ export class SidebarComponent {
     if (
       permissions.find(
         (permision) =>
-          permision.idPermiso === 5 ||
           permision.idPermiso === 6 ||
           permision.idPermiso === 7 ||
-          permision.idPermiso === 8,
+          permision.idPermiso === 8 ||
+          permision.idPermiso === 9 ||
+          permision.idPermiso === 10,
       )
     ) {
       this.person = false;
@@ -63,10 +61,11 @@ export class SidebarComponent {
     if (
       permissions.find(
         (permision) =>
-          permision.idPermiso === 9 ||
-          permision.idPermiso === 10 ||
           permision.idPermiso === 11 ||
-          permision.idPermiso === 12,
+          permision.idPermiso === 12 ||
+          permision.idPermiso === 13 ||
+          permision.idPermiso === 14 ||
+          permision.idPermiso === 15,
       )
     ) {
       this.client = false;
@@ -75,10 +74,11 @@ export class SidebarComponent {
     if (
       permissions.find(
         (permision) =>
-          permision.idPermiso === 13 ||
-          permision.idPermiso === 14 ||
-          permision.idPermiso === 15 ||
-          permision.idPermiso === 16,
+          permision.idPermiso === 16 ||
+          permision.idPermiso === 17 ||
+          permision.idPermiso === 18 ||
+          permision.idPermiso === 19 ||
+          permision.idPermiso === 20,
       )
     ) {
       this.gender = false;
@@ -87,10 +87,11 @@ export class SidebarComponent {
     if (
       permissions.find(
         (permision) =>
-          permision.idPermiso === 17 ||
-          permision.idPermiso === 18 ||
-          permision.idPermiso === 19 ||
-          permision.idPermiso === 20,
+          permision.idPermiso === 21 ||
+          permision.idPermiso === 22 ||
+          permision.idPermiso === 23 ||
+          permision.idPermiso === 24 ||
+          permision.idPermiso === 25,
       )
     ) {
       this.user = false;
@@ -99,10 +100,11 @@ export class SidebarComponent {
     if (
       permissions.find(
         (permision) =>
-          permision.idPermiso === 21 ||
-          permision.idPermiso === 22 ||
-          permision.idPermiso === 23 ||
-          permision.idPermiso === 24,
+          permision.idPermiso === 26 ||
+          permision.idPermiso === 27 ||
+          permision.idPermiso === 28 ||
+          permision.idPermiso === 29 ||
+          permision.idPermiso === 30,
       )
     ) {
       this.profile = false;
