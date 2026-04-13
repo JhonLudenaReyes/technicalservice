@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 import { UserAuth } from '../interfaces/userAuth.interface';
 import { UserLogin } from '../interfaces/userLogin.interface';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -20,14 +21,13 @@ export class AuthService {
   );
   public idRole$ = this.idRoleSubject.asObservable();
 
-  private serverURL = `http://localhost:8081`;
-  private apiUrl = `servicio-tecnico/web-service/api`;
+  private apiUrl = `${environment.apiUrl}/usuarios`;
 
   constructor(private http: HttpClient) {}
 
   getUserLogIn(user: UserLogin): Observable<UserAuth> {
     return this.http.post<UserAuth>(
-      `${this.serverURL}/${this.apiUrl}/usuarios/login`,
+      `${this.apiUrl}/login`,
       user,
     ).pipe(
       tap(userAuth => {
