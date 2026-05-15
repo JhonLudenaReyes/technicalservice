@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { UserAuth } from '../../interfaces/userAuth.interface';
 import { UserLogin } from '../../interfaces/userLogin.interface';
+import { switchMap } from 'rxjs';
 
 import {
   FormBuilder,
@@ -27,18 +28,18 @@ export class LoginComponent {
     detail: 'Su usuario y/o contraseña son incorrectos',
   };
 
-  // Definir mensajes de error para usuario
-  errorMessagesUser = {
-    required: 'Debe ingresar nombre de usuario',
-    minlength: 'El usuario debe tener al menos 5 caracteres',
-    maxlength: 'El usuario debe tener un máximo de 10 caracteres',
-  };
-
-  // Definir mensajes de error para contraseña
-  errorMessagesPassword = {
-    required: 'Debe ingresar una contraseña',
-    minlength: 'El usuario debe tener al menos 8 caracteres',
-    maxlength: 'El usuario debe tener un máximo de 10 caracteres',
+  // Mensajes de error consolidados
+  errorMessages: { [key: string]: { [key: string]: string } } = {
+    user: {
+      required: 'Debe ingresar nombre de usuario',
+      minlength: 'El usuario debe tener al menos 5 caracteres',
+      maxlength: 'El usuario debe tener un máximo de 10 caracteres',
+    },
+    password: {
+      required: 'Debe ingresar una contraseña',
+      minlength: 'El usuario debe tener al menos 8 caracteres',
+      maxlength: 'El usuario debe tener un máximo de 10 caracteres',
+    }
   };
 
   get user() {
@@ -78,50 +79,13 @@ export class LoginComponent {
     });
   }
 
-  // Método para obtener mensajes de error
-  getErrorMessageUser(controlName: string) {
+  // Método genérico para obtener mensajes de error
+  getErrorMessage(controlName: string): string {
     const control = this.loginForm.get(controlName);
-    if (control == null) {
-      return;
-    }
-    for (const error in control.errors) {
-      if (control.errors.hasOwnProperty(error) && control.touched) {
-        switch (error) {
-          case 'required':
-            return this.errorMessagesUser.required;
-          case 'minlength':
-            return this.errorMessagesUser.minlength;
-          case 'maxlength':
-            return this.errorMessagesUser.maxlength;
-          default:
-            return;
-        }
-      }
-    }
-    return '';
-  }
+    if (!control || !control.errors || !control.touched) return '';
 
-  // Método para obtener mensajes de error
-  getErrorMessagePassword(controlName: string) {
-    const control = this.loginForm.get(controlName);
-    if (control == null) {
-      return;
-    }
-    for (const error in control.errors) {
-      if (control.errors.hasOwnProperty(error) && control.touched) {
-        switch (error) {
-          case 'required':
-            return this.errorMessagesPassword.required;
-          case 'minlength':
-            return this.errorMessagesPassword.minlength;
-          case 'maxlength':
-            return this.errorMessagesPassword.maxlength;
-          default:
-            return;
-        }
-      }
-    }
-    return '';
+    const firstErrorKey = Object.keys(control.errors)[0];
+    return this.errorMessages[controlName]?.[firstErrorKey] || '';
   }
 
   onLogIn() {
@@ -130,7 +94,10 @@ export class LoginComponent {
       contrasenia: this.loginForm.get('password')?.value,
     };
 
-    this.authService.getUserLogIn(this.userData).subscribe({
+    // Primero autenticamos para obtener el JWT y luego obtenemos los datos del usuario
+    this.authService.authenticate(this.userData).pipe(
+      switchMap(() => this.authService.getUserLogIn(this.userData))
+    ).subscribe({
       next: (userLogIn) => {
         this.userAuth = userLogIn;
         this.router.navigate(['/dashboard/admin']);

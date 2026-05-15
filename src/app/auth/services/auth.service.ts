@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 import { UserAuth } from '../interfaces/userAuth.interface';
 import { UserLogin } from '../interfaces/userLogin.interface';
+import { AuthResponse } from '../interfaces/authResponse.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -12,12 +13,12 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
   private userAuthSubject = new BehaviorSubject<UserAuth | null>(
-    JSON.parse(localStorage.getItem('userAuth') || 'null')
+    JSON.parse(localStorage.getItem('userAuth') || 'null'),
   );
   public userAuth$ = this.userAuthSubject.asObservable();
 
   private idRoleSubject = new BehaviorSubject<number>(
-    Number(localStorage.getItem('idRole') || '0')
+    Number(localStorage.getItem('idRole') || '0'),
   );
   public idRole$ = this.idRoleSubject.asObservable();
 
@@ -25,15 +26,22 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  authenticate(user: UserLogin): Observable<AuthResponse> {
+    return this.http
+      .post<AuthResponse>(`${this.apiUrl}/authenticate`, user)
+      .pipe(
+        tap((token) => {
+          localStorage.setItem('jwt', token.jwt);
+        }),
+      );
+  }
+
   getUserLogIn(user: UserLogin): Observable<UserAuth> {
-    return this.http.post<UserAuth>(
-      `${this.apiUrl}/login`,
-      user,
-    ).pipe(
-      tap(userAuth => {
+    return this.http.post<UserAuth>(`${this.apiUrl}/login`, user).pipe(
+      tap((userAuth) => {
         localStorage.setItem('userAuth', JSON.stringify(userAuth));
         this.userAuthSubject.next(userAuth);
-      })
+      }),
     );
   }
 
@@ -45,11 +53,16 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('userAuth');
     localStorage.removeItem('idRole');
+    localStorage.removeItem('jwt');
     this.userAuthSubject.next(null);
     this.idRoleSubject.next(0);
   }
 
   get currentUserValue(): UserAuth | null {
     return this.userAuthSubject.value;
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('jwt');
   }
 }

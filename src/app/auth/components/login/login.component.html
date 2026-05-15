@@ -42,7 +42,7 @@
         />
       </div>
       <p *ngIf="user.invalid && user.touched" style="color: brown">
-        {{ getErrorMessageUser("user") }}
+        {{ getErrorMessage("user") }}
       </p>
       <div class="input-group mb-3">
         <span class="input-group-text" id="passwordIcon"
@@ -59,7 +59,7 @@
         />
       </div>
       <p *ngIf="password.invalid && password.touched" style="color: brown">
-        {{ getErrorMessagePassword("password") }}
+        {{ getErrorMessage("password") }}
       </p>
       <button
         type="submit"

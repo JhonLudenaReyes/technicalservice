@@ -1,31 +1,18 @@
-<div class="position-relative p-0 border">
-  <div class="position-absolute top-0 end-0 p-2">
-    <!--NOTIFICACIÓN SUCCESS-->
-    <div
-      class="alert alert-success"
-      role="alert"
-      *ngIf="this.addSuccess.enable"
-    >
-      <h4 class="alert-heading">¡Confirmación!</h4>
-      {{ this.addSuccess.detail }}
-      <i class="bi bi-x-square btn-hand" (click)="onSuccessClear()"></i>
+<ng-container *ngIf="notification$ | async as notification">
+  <div class="position-relative p-0 border" *ngIf="notification.enable">
+    <div class="position-absolute top-0 end-0 p-2">
+      <!--NOTIFICACIÓN-->
+      <div
+        [class]="notification.server === 'success' ? 'alert alert-success' : 'alert alert-danger'"
+        role="alert"
+      >
+        <h4 class="alert-heading">{{ notification.server === 'success' ? '¡Confirmación!' : '¡Aviso!' }}</h4>
+        {{ notification.detail }}
+        <i class="bi bi-x-square btn-hand" (click)="onClearNotification()"></i>
+      </div>
     </div>
-    <!--NOTIFICACIÓN ERROR-->
-
-    <div
-      class="alert alert-danger"
-      role="alert"
-      *ngIf="this.errorServer.enable"
-    >
-      <h4 class="alert-heading">¡Cancelación!</h4>
-      {{ this.errorServer.detail }}
-
-      <i class="bi bi-x-square btn-hand" (click)="onErrorClear()"></i>
-    </div>
-
-    <!---->
   </div>
-</div>
+</ng-container>
 
 <div class="card m-4" style="width: 32rem">
   <div class="card-body">
