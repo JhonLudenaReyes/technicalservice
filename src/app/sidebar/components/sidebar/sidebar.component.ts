@@ -1,18 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { UserAuth } from 'src/app/auth/interfaces/userAuth.interface';
-import { Permit } from 'src/app/permit/interfaces/Permit.interface';
+import { Permission } from 'src/app/role/interfaces/permission.interface';
+import { RoleService } from 'src/app/role/services/role.service';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
-export class SidebarComponent {
-  userAuth!: UserAuth;
+export class SidebarComponent implements OnInit, OnDestroy {
+  userAuth!: UserAuth | null;
   idRole!: number;
-  permits!: Permit[];
+  permissions!: Permission[];
+  private roleSubscription!: Subscription;
 
-  //Variables del menu
+  // Variables del menu (true = oculto, false = visible)
   user: boolean = true;
   person: boolean = true;
   client: boolean = true;
@@ -20,93 +24,69 @@ export class SidebarComponent {
   role: boolean = true;
   profile: boolean = true;
 
-  ngDoCheck(): void {
-    //Called every time that the input properties of a component or a directive are checked. Use it to extend change detection by performing a custom check.
-    //Add 'implements DoCheck' to the class.
-    this.userAuth = JSON.parse(localStorage.getItem('userAuth') || 'null');
-    this.idRole = JSON.parse(localStorage.getItem('idRole') || '0');
-    if (this.userAuth != null && this.idRole > 0) {
-      this.permits = this.userAuth.roles[this.idRole - 1].permisos;
-      this.addMenu(this.permits);
+  constructor(
+    private roleService: RoleService,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    // Nos suscribimos a los cambios de rol de forma reactiva
+    this.roleSubscription = this.authService.idRole$.subscribe((idRole) => {
+      this.idRole = idRole;
+      this.userAuth = this.authService.currentUserValue;
+
+      if (this.userAuth != null && this.idRole > 0) {
+        this.roleService.getPermissions(this.idRole).subscribe({
+          next: (permissions) => {
+            this.permissions = permissions;
+            this.resetMenu();
+            this.addMenu(this.permissions);
+          },
+          error: (err) => console.error('Error al cargar permisos:', err),
+        });
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Limpiamos la suscripción para evitar memory leaks
+    if (this.roleSubscription) {
+      this.roleSubscription.unsubscribe();
     }
   }
 
-  addMenu(permissions: Permit[]) {
-    if (
-      permissions.find(
-        (permision) =>
-          permision.idPermiso === 1 ||
-          permision.idPermiso === 2 ||
-          permision.idPermiso === 3 ||
-          permision.idPermiso === 4 ||
-          permision.idPermiso === 5,
-      )
-    ) {
+  resetMenu(): void {
+    this.user = true;
+    this.person = true;
+    this.client = true;
+    this.gender = true;
+    this.role = true;
+    this.profile = true;
+  }
+
+  addMenu(permissions: Permission[]) {
+    // Optimizamos usando .some() para verificar rangos de IDs de permisos
+    if (permissions.some(p => p.permissionId >= 1 && p.permissionId <= 5)) {
       this.role = false;
     }
 
-    if (
-      permissions.find(
-        (permision) =>
-          permision.idPermiso === 6 ||
-          permision.idPermiso === 7 ||
-          permision.idPermiso === 8 ||
-          permision.idPermiso === 9 ||
-          permision.idPermiso === 10,
-      )
-    ) {
+    if (permissions.some(p => p.permissionId >= 6 && p.permissionId <= 10)) {
       this.person = false;
     }
 
-    if (
-      permissions.find(
-        (permision) =>
-          permision.idPermiso === 11 ||
-          permision.idPermiso === 12 ||
-          permision.idPermiso === 13 ||
-          permision.idPermiso === 14 ||
-          permision.idPermiso === 15,
-      )
-    ) {
+    if (permissions.some(p => p.permissionId >= 11 && p.permissionId <= 15)) {
       this.client = false;
     }
 
-    if (
-      permissions.find(
-        (permision) =>
-          permision.idPermiso === 16 ||
-          permision.idPermiso === 17 ||
-          permision.idPermiso === 18 ||
-          permision.idPermiso === 19 ||
-          permision.idPermiso === 20,
-      )
-    ) {
+    if (permissions.some(p => p.permissionId >= 16 && p.permissionId <= 20)) {
       this.gender = false;
     }
 
-    if (
-      permissions.find(
-        (permision) =>
-          permision.idPermiso === 21 ||
-          permision.idPermiso === 22 ||
-          permision.idPermiso === 23 ||
-          permision.idPermiso === 24 ||
-          permision.idPermiso === 25,
-      )
-    ) {
+    if (permissions.some(p => p.permissionId >= 21 && p.permissionId <= 25)) {
       this.user = false;
     }
 
-    if (
-      permissions.find(
-        (permision) =>
-          permision.idPermiso === 26 ||
-          permision.idPermiso === 27 ||
-          permision.idPermiso === 28 ||
-          permision.idPermiso === 29 ||
-          permision.idPermiso === 30,
-      )
-    ) {
+    if (permissions.some(p => p.permissionId >= 26 && p.permissionId <= 30)) {
       this.profile = false;
     }
   }

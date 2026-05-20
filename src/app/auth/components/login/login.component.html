@@ -1,8 +1,8 @@
 <!--NOTIFICACIÓN-->
-<div class="position-relative p-0 border" *ngIf="this.errorServer.error">
+<div class="position-relative p-0 border" *ngIf="this.errorServer.status">
   <div class="position-absolute top-0 end-0 p-2">
     <div class="alert alert-danger" role="alert">
-      {{ this.errorServer.detail }}
+      {{ this.errorServer.message }}
       <i class="bi bi-x-square btn-hand" (click)="onErrorClear()"></i>
     </div>
   </div>

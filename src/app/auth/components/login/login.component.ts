@@ -11,6 +11,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ErrorHttpResp } from '../../interfaces/errorHttpResp';
 
 @Component({
   selector: 'app-login',
@@ -20,13 +21,17 @@ import {
 export class LoginComponent {
   //Creación de la propiedad para el formulario reactivo
   loginForm!: FormGroup;
+
   userData!: UserLogin;
   userAuth!: UserAuth;
 
-  errorServer = {
-    error: false,
-    detail: 'Su usuario y/o contraseña son incorrectos',
+  initialErrorServer: ErrorHttpResp = {
+    status: 0,
+    message: '',
+    timestamp: '',
   };
+
+  errorServer: ErrorHttpResp = this.initialErrorServer;
 
   // Mensajes de error consolidados
   errorMessages: { [key: string]: { [key: string]: string } } = {
@@ -39,7 +44,7 @@ export class LoginComponent {
       required: 'Debe ingresar una contraseña',
       minlength: 'El usuario debe tener al menos 8 caracteres',
       maxlength: 'El usuario debe tener un máximo de 10 caracteres',
-    }
+    },
   };
 
   get user() {
@@ -95,20 +100,21 @@ export class LoginComponent {
     };
 
     // Primero autenticamos para obtener el JWT y luego obtenemos los datos del usuario
-    this.authService.authenticate(this.userData).pipe(
-      switchMap(() => this.authService.getUserLogIn(this.userData))
-    ).subscribe({
-      next: (userLogIn) => {
-        this.userAuth = userLogIn;
-        this.router.navigate(['/dashboard/admin']);
-      },
-      error: (response) => {
-        this.errorServer.error = true;
-      },
-    });
+    this.authService
+      .authenticate(this.userData)
+      .pipe(switchMap(() => this.authService.getUserLogIn(this.userData)))
+      .subscribe({
+        next: (userLogIn) => {
+          this.userAuth = userLogIn;
+          this.router.navigate(['/dashboard/admin']);
+        },
+        error: (errorHttpResp) => {
+          this.errorServer = errorHttpResp.error;
+        },
+      });
   }
 
   onErrorClear() {
-    this.errorServer.error = false;
+    this.errorServer = this.initialErrorServer;
   }
 }

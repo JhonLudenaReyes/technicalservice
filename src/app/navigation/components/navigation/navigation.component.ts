@@ -32,6 +32,7 @@ export class NavigationComponent implements DoCheck {
   cerrarSesion() {
     localStorage.removeItem('userAuth');
     localStorage.removeItem('idRole');
+    localStorage.removeItem('jwt');
     this.habilitar = false;
 
     //localStorage.removeItem(`permissionsLogin`);
